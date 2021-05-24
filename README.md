@@ -17,7 +17,8 @@ Store control times from Project 4 in a MongoDB database.
 ##### 1. I edited `docker-compose.yml` and not sure how it works.
 ##### 2. I ran `flask_brevets.py` on my local computer, and it reports errors.
 ##### 3. I have no idea how to write testcases to test databases.
-### 4. Will figure those issues out later and do another commit.
+##### 4. Browser reports `ERR_CONNECTION_REFUSED` when testing on testium.
+### 5. Will figure those issues out later and do another commit.
 
 ## Credits
 
