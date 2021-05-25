@@ -76,6 +76,8 @@
                -->
             <div class="row">
                <div class="col-md-12">
+			   		<button type="button" id="submit" onClick="submisson()">Submit</button>
+					<button type="button" id="display">Display</button>
                   <table class="control_time_table">
                      <tr>
                         <th> Miles </th>
@@ -101,13 +103,12 @@
                         <td><input name="open" type="datetime-local" readonly value="" /></td>
                         <!-- Close time (read only, set by JavaScript function -->
                         <td><input name="close" type="datetime-local" readonly value="" /></td>
-						<button type="button" id="submit" onClick="submisson()">Submit</button>
-						<button type="button" id="display">Display</button>
                         <!-- Notes (error messages for this row) -->
                         <td class="notes"> &nbsp; </td>
                      </tr>
                      {% endfor %}
                   </table>
+
                </div>
                <!-- col -->
             </div>
@@ -130,7 +131,7 @@
               var open_time_field = control.find("input[name='open']");
               var close_time_field = control.find("input[name='close']");
 			  var dt = document.getElementById("begin_date").value;
-			  
+			  console.log("DISTANCE: " +  distance  + "  " + "DATETIME: " + dt + "    "+ "KM: " + km)
 
 
               $.getJSON(TIME_CALC_URL, {km: km, brevet_dist_km: distance, begin_date: dt}).done(

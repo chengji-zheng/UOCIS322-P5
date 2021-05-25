@@ -5,21 +5,23 @@ Replacement for RUSA ACP brevet time calculator
 """
 
 import flask
-from flask import request
+from flask import request, Flask, render_template, url_for, redirect
 import arrow  # Replacement for datetime, based on moment.js
 import acp_times  # Brevet time calculations
 import config
 from pymongo import MongoClient
 import os
 import logging
+import json
 
 ###
 # Globals
 ###
 app = flask.Flask(__name__)
-client = MongoClient(os.environ['DB_PORT_27017_TCP_ADDR'], 27017)
-db = client.tododb
 CONFIG = config.configuration()
+client = MongoClient('mongodb://' + os.environ['MONGODB_HOSTNAME'], 27017)
+db = client.tododb
+
 
 ###
 # Pages
@@ -63,8 +65,9 @@ def _calc_times():
     # You should get these from the webpage!
     
     # Getting distance and start time from html page
-    distance = request.args.get("brevet_dist_km", 1000)
-    start_time = arrow.get(request.args.get("brevet_start_time", arrow.now(), type=str), "YYYY-MM-DDTHH:mm")
+    distance = request.args.get("brevet_dist_km", 1000, type=float)
+    start_time = request.args.get("begin_date", arrow.now(), type=str)
+    start_time = arrow.get(start_time, 'YYYY-MM-DDTHH:mm')
     
     # Calling acp_times.open_time to calculate time
     open_time = acp_times.open_time(km, distance, start_time).format('YYYY-MM-DDTHH:mm')
@@ -72,6 +75,7 @@ def _calc_times():
     close_time = acp_times.close_time(km, distance, start_time).format('YYYY-MM-DDTHH:mm')
     # Packaging open_time and close_time in a dictionary and sent in JSON.
     result = {"open": open_time, "close": close_time}
+    app.logger.debug("Testing result: ", result)
     return flask.jsonify(result=result)
 
 # Route to handle submission (submit button)
@@ -86,9 +90,9 @@ def _submission():
     return flask.redirect(url_for('index'))
 
 # Route to handle display (display button)
-@route("/_display", methods=["POST"])
+@app.route("/_display", methods=["GET"])
 def _display():
-    return flask.render_template('./display.html', items=[item for item in db.tododb.find()])
+    return flask.render_template('display.html', items=[item for item in db.tododb.find()])
     
 
 #############
