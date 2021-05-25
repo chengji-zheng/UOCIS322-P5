@@ -154,7 +154,7 @@
 				$(".control").each(function(){
 					var open_time_field = $(this).find("input[name='open']").val();
 					var close_time_field = $(this).find("input[name='close']").val();
-					if (open_time_field != "" || close_time_field != ""){
+					if (open_time_field != ""){
 						$.getJSON(SUBMISSION_URL, {open_time_field: open_time_field, close_time_field: close_time_field});
 					}
 				});
