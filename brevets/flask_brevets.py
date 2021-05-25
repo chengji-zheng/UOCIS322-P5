@@ -62,27 +62,19 @@ def _calc_times():
     # and control distance is fixed to 200
     # You should get these from the webpage!
     
-    # Basic Logic -- Error Handlers
-        #1 Check user input is valid or not, if valid
-            #1.1 If user input exceed the maximum distance, then raise an error
-        #2 If not valid, asking user re-enter a valid value
-
-    # Get input from client_side
-    user_input_in_km = request.args.get('km', type=str)
-    if user_input_in_km.isdigit():
-        if user_input_in_km > km:
-            # Put everything in 1 line, if not work, have to edit them seperately.
-            return flask.jsonify({"open": request.args.get("begin_date"), "close": request.args.get("begin_date"), "error_msg": "The checkPoint located at the place that exceed the maximum distance"})
-    else:
-        return flask.jsonify({"open": request.args.get("begin_date"), "close": request.args.get("begin_date"), "error_msg": "Please enter a valid value!"})
+    # Getting distance and start time from html page
+    distance = request.args.get("brevet_dist_km", 1000)
+    start_time = arrow.get(request.args.get("brevet_start_time", arrow.now(), type=str), "YYYY-MM-DDTHH:mm")
     
-    # If data valid, then call the functions we have in acp_times to calculate.
-    open_time = acp_times.open_time(km, 200, arrow.now().isoformat).format('YYYY-MM-DDTHH:mm')
-    close_time = acp_times.close_time(km, 200, arrow.now().isoformat).format('YYYY-MM-DDTHH:mm')
-    # Packing open_time and close_time in a dictionary and sent in JSON.
+    # Calling acp_times.open_time to calculate time
+    open_time = acp_times.open_time(km, distance, start_time).format('YYYY-MM-DDTHH:mm')
+    # Calling acp_times.close_time to calculate time
+    close_time = acp_times.close_time(km, distance, start_time).format('YYYY-MM-DDTHH:mm')
+    # Packaging open_time and close_time in a dictionary and sent in JSON.
     result = {"open": open_time, "close": close_time}
     return flask.jsonify(result=result)
 
+# Route to handle submission (submit button)
 @app.route("/_submission", methods=["POST"])
 def _submission():
     app.logger.debug("Submit ACP Time to DB")
@@ -93,6 +85,7 @@ def _submission():
     db.tododb.insert_one(item_doc)
     return flask.redirect(url_for('index'))
 
+# Route to handle display (display button)
 @route("/_display", methods=["POST"])
 def _display():
     return flask.render_template('./display.html', items=[item for item in db.tododb.find()])
