@@ -77,7 +77,7 @@
             <div class="row">
                <div class="col-md-12">
 			   		<button type="button" id="submit" onClick="submisson()">Submit</button>
-					<button type="button" id="display">Display</button>
+					<button type="button" id="display" onClick="display()">Display</button>
                   <table class="control_time_table">
                      <tr>
                         <th> Miles </th>
@@ -161,6 +161,10 @@
 				});
 				
 			}
+			
+		document.getElementById("display").onclick = function () {
+			location.href = DISPLAY_URL;
+		};
 
             $(document).ready(function(){
              // Do the following when the page is finished loading
