@@ -17,11 +17,10 @@ Store control times from Project 4 in a MongoDB database.
 #####	1. `ERR_CONNECTION_REFUSED` Issue was fixed by editing on `docker-compose.yml` and `dockerfile` and `requirements.txt` three config files
 #####	2. The webpage was successfully loaded
 ##### 3. The display.html looks good, but just displayed the data I submitted at the first time. Maybe I need to revise it in a smarter way -- Like clear the database after the user click submit button and then get new data and display on diaplay page.
+##### 4. Fixed a few minor errors
 
 ### Known Issue(s):
-##### 	1. When testing on those two buttons, it reports errors -- `405 (METHOD NOT ALLOWED)` and `500 (INTERNAL SERVER ERROR)` But the display page did show the date we want.
-#####   2. Might need to look up the syntax to delete data in MongoDB
-#####   3. Need testcases
+##### 	1. Will need more testcases (if possible).
 
 
 ## Credits

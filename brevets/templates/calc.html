@@ -104,7 +104,7 @@
                         <!-- Close time (read only, set by JavaScript function -->
                         <td><input name="close" type="datetime-local" readonly value="" /></td>
                         <!-- Notes (error messages for this row) -->
-                        <td class="notes"> &nbsp; </td>
+                        <td class="notes"><input name="err_msg" /> &nbsp; </td>
                      </tr>
                      {% endfor %}
                   </table>
@@ -128,6 +128,7 @@
             function calc_times(control) {
               var km = control.find("input[name='km']").val();
 			  var distance = document.getElementById("brevet_dist_km").value;
+			  var err_msg = control.find("input[name='err_msg']");
               var open_time_field = control.find("input[name='open']");
               var close_time_field = control.find("input[name='close']");
 			  var dt = document.getElementById("begin_date").value;
@@ -143,6 +144,7 @@
                    // so don't worry about those.
                    open_time_field.val(moment(times.open).format("YYYY-MM-DDTHH:mm"));
                    close_time_field.val(moment(times.close).format("YYYY-MM-DDTHH:mm"));
+				   err_msg.val(times.err_msg);
                  }
                ).fail(function(err){
                  // In case you get an error...

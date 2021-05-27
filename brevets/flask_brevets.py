@@ -38,7 +38,7 @@ def index():
 @app.errorhandler(404)
 def page_not_found(error):
     app.logger.debug("Page not found")
-    flask.session['linkback'] = flask.url_for("index")
+    # flask.session['linkback'] = flask.url_for("index")
     return flask.render_template('404.html'), 404
 
 
@@ -69,17 +69,20 @@ def _calc_times():
     start_time = request.args.get("begin_date", arrow.now(), type=str)
     start_time = arrow.get(start_time, 'YYYY-MM-DDTHH:mm')
     
+    err_msg = ""
+    if (km > distance) or (km < 0) :
+        err_msg = "Invalid Control! It should not greater than the total distance. Or you entered a negative number!"
     # Calling acp_times.open_time to calculate time
     open_time = acp_times.open_time(km, distance, start_time).format('YYYY-MM-DDTHH:mm')
     # Calling acp_times.close_time to calculate time
     close_time = acp_times.close_time(km, distance, start_time).format('YYYY-MM-DDTHH:mm')
     # Packaging open_time and close_time in a dictionary and sent in JSON.
-    result = {"open": open_time, "close": close_time}
+    result = {"open": open_time, "close": close_time, "err_msg": err_msg}
     app.logger.debug("Testing result: ", result)
     return flask.jsonify(result=result)
 
 # Route to handle submission (submit button)
-@app.route("/_submission", methods=["POST"])
+@app.route("/_submission")
 def _submission():
     app.logger.debug("Submit ACP Time to DB")
     item_doc = {

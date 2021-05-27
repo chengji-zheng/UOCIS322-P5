@@ -3,9 +3,9 @@
 	<h3> Display </h3>
 </head>
 <body>
+	{% for item in items %}
 	<div> 
-		{% for item in items %}
-		<h6> {{item.open_time_field + " ~ " + item.close_time_field}} </h6>
+		<p>{{item.open_time_field + " ~ " + item.close_time_field}}<p>
 	</div>
 	{% endfor %}
 </body>

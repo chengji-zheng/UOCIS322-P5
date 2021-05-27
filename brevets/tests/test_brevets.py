@@ -16,7 +16,7 @@ def test_open_times():
     """
     A series of testing that testing open_times in 0, 60, 200, 300, 400, 600, 1000km
     """
-    testting_time = arrow.now.format()
+    testing_time = arrow.now.format()
     assert str(open_time(0, 200, testing_time)) == str(testing_time)                        # Testing for 0km
     assert str(open_time(60, 200, testing_time)) == str(testing_time.shift(minutes=106))    # Testing for 60km
     assert str(open_time(200, 200, testing_time)) == str(testing_time.shift(minutes=353))   # Testing for 200km
@@ -51,4 +51,8 @@ def test_invalid_user_input():
     assert close_time("20", 200, testing_time)
     assert open_time(, 200, testing_time)                       #Testing with an empty value
     assert close_time(, 200, testing_time)
+
+
+time = arrow.get("2021-01-01T01:01", 'YYYY-MM-DDTHH:mm')
+
     
